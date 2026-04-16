@@ -1,0 +1,413 @@
+/* ═══════════════════════════════════════
+   ROOT & RESET
+═══════════════════════════════════════ */
+:root {
+  --bg: #050510;
+  --active-color: #00f0ff;
+  --glow: rgba(0,240,255,0.45);
+ 
+  /* Responsive card size */
+  /* ✅ 3 cards fit ho sake screen pe comfortably */
+  --card-w: clamp(180px, 22vw, 260px);
+  --card-h: calc(var(--card-w) * 1.5);
+}
+ 
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+ 
+/* ─── FIX 4: Scrollbar completely hidden ─── */
+html, body {
+  width: 100%;
+  height: 100%;
+  background: var(--bg);
+  font-family: 'Rajdhani', sans-serif;
+  color: #fff;
+  transition: background 0.9s ease;
+  overflow: hidden; /* No scroll at all */
+}
+ 
+/* Hide scrollbar across all browsers */
+::-webkit-scrollbar {
+  display: none;
+}
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+ 
+/* ═══════════════════════════════════════
+   BACKGROUND
+═══════════════════════════════════════ */
+.bg-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+ 
+  background-image:
+    linear-gradient(rgba(0,240,255,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,240,255,0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+ 
+.bg-blob {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: 0;
+  background: var(--active-color);
+  transition: background 0.9s ease;
+}
+ 
+.scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+ 
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(0,0,0,0.07) 3px,
+    rgba(0,0,0,0.07) 4px
+  );
+}
+ 
+/* Corners */
+.corner {
+  position: fixed;
+  width: 55px;
+  height: 55px;
+  border-style: solid;
+  border-color: rgba(0,240,255,0.25);
+  z-index: 10;
+  pointer-events: none;
+  transition: border-color 0.7s ease;
+}
+.corner.tl { top:18px; left:18px; border-width:2px 0 0 2px; }
+.corner.tr { top:18px; right:18px; border-width:2px 2px 0 0; }
+.corner.bl { bottom:18px; left:18px; border-width:0 0 2px 2px; }
+.corner.br { bottom:18px; right:18px; border-width:0 2px 2px 0; }
+ 
+/* ═══════════════════════════════════════
+   LAYOUT
+═══════════════════════════════════════ */
+.layout {
+  position: relative;
+  z-index: 5;
+  width: 100%;
+  min-height: 100vh;
+ 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+ 
+/* ═══════════════════════════════════════
+   TITLE
+═══════════════════════════════════════ */
+.title {
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(0.9rem, 4vw, 1.6rem);
+  font-weight: 900;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  text-shadow: 0 0 18px var(--active-color);
+}
+ 
+.title .accent {
+  color: var(--active-color);
+  transition: all 0.6s ease;
+}
+ 
+/* ═══════════════════════════════════════
+   SWIPER
+   FIX 1: overflow visible so right-side
+   cards don't get clipped
+═══════════════════════════════════════ */
+.swiper-outer {
+  width: 100%;
+  max-width: 1100px;
+  overflow: visible; /* ✅ FIX 1 */
+}
+ 
+.swiper {
+  width: 100%;
+  padding: 40px 0 65px;
+  touch-action: pan-x;
+  overflow: visible !important; /* ✅ FIX 1 */
+}
+ 
+/* ═══════════════════════════════════════
+   CARD
+   FIX 2: GPU-accelerated smooth hover
+═══════════════════════════════════════ */
+.swiper-slide {
+  width: var(--card-w);
+  height: var(--card-h);
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+ 
+  border: 1px solid rgba(255,255,255,0.07);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+ 
+  /* ✅ FIX 2: GPU-accelerated smooth transition */
+  will-change: transform;
+  transition:
+    transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.5s ease,
+    border-color 0.5s ease;
+}
+ 
+.swiper-slide-active {
+  border-color: var(--active-color);
+  box-shadow: 0 0 35px var(--glow);
+}
+ 
+/* ✅ FIX 2: Smooth hover float — no jhatka */
+.swiper-slide-active:hover {
+  transform: translateY(-25px) scale(1.03) !important;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.8), 0 0 20px var(--glow) !important;
+  border-color: var(--active-color) !important;
+}
+ 
+/* ═══════════════════════════════════════
+   IMAGE WRAP
+═══════════════════════════════════════ */
+.card-img-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+ 
+/* ✅ FIX 3: Image default hidden, dikhegi hover pe */
+.card-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  opacity: 0;
+  transition: opacity 0.45s ease, transform 0.5s ease;
+}
+ 
+/* Desktop hover */
+@media (hover: hover) {
+  .swiper-slide-active:hover img {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+
+  .swiper-slide-active:hover .card-symbol {
+    opacity: 0;
+  }
+}
+
+/* Mobile (no hover) */
+@media (hover: none) {
+  .swiper-slide-active img {
+    opacity: 1;
+  }
+
+  .swiper-slide-active .card-symbol {
+    opacity: 0;
+  }
+}
+ 
+/* ═══════════════════════════════════════
+   SYMBOL
+   FIX 3: Symbol default dikhega,
+   hover pe gayab hoga smoothly
+═══════════════════════════════════════ */
+.card-symbol {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5rem;
+  opacity: 1;                        
+  z-index: 2;
+  transition: opacity 0.45s ease;    
+  pointer-events: none;
+}
+ 
+.swiper-slide-active:hover .card-symbol {
+  opacity: 0;
+}
+ 
+/* ═══════════════════════════════════════
+   OVERLAY & INFO
+═══════════════════════════════════════ */
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  z-index: 3;
+  pointer-events: none;
+}
+ 
+.card-info {
+  position: absolute;
+  bottom: 0;
+  padding: 16px;
+  z-index: 4;
+}
+ 
+.card-name {
+  font-family: 'Orbitron';
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+}
+ 
+.card-sub {
+  font-size: 0.6rem;
+  opacity: 0.6;
+}
+ 
+/* ═══════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════ */
+.swiper-button-prev,
+.swiper-button-next {
+  color: var(--active-color) !important;
+  z-index: 999 !important;
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  transition: all 0.3s ease;
+}
+ 
+.swiper-button-prev:hover,
+.swiper-button-next:hover {
+  transform: scale(1.3);
+  filter: drop-shadow(0 0 15px var(--active-color));
+}
+ 
+.swiper-button-next,
+.swiper-button-prev {
+  display: flex !important;
+}
+ 
+.swiper-pagination-bullet-active {
+  background: var(--active-color);
+  box-shadow: 0 0 10px var(--active-color);
+}
+ 
+/* ═══════════════════════════════════════
+   SIDE PANEL
+═══════════════════════════════════════ */
+.hero-panel {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+ 
+.hero-name-vert {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: clamp(1.5rem, 5vw, 3rem);
+  color: var(--active-color);
+}
+ 
+/* ═══════════════════════════════════════
+   MOBILE RESPONSIVE
+═══════════════════════════════════════ */
+@media (max-width: 768px) {
+  .hero-panel {
+    display: none;
+  }
+ 
+  .title {
+    letter-spacing: 0.2em;
+  }
+ 
+  /* Mobile pe overflow visible rehna chahiye */
+  html, body {
+    overflow: hidden;
+  }
+ 
+  .swiper-slide-active:hover {
+    transform: translateY(-12px) scale(1.02) !important;
+  }
+}
+ 
+@media (max-width: 480px) {
+  :root {
+    --card-w: clamp(130px, 38vw, 180px);
+  }
+ 
+  .title {
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+  }
+}
+
+
+
+
+/* ═══════════════════════════════════════
+   CENTER HERO NAME (NEW)
+═══════════════════════════════════════ */
+
+.hero-center-name {
+  position: fixed;
+  bottom: 35px;
+  left: 50%;
+  transform: translateX(-50%) translateY(40px) scale(0.8);
+
+  font-family: 'Orbitron', monospace;
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+
+  color: var(--active-color);
+  text-shadow: 0 0 20px var(--glow);
+
+  opacity: 0;
+  pointer-events: none;
+  z-index: 50;
+
+  transition: all 0.4s ease, letter-spacing 0.5s ease;
+}
+
+/* ACTIVE STATE */
+.hero-center-name.active {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
+
+  letter-spacing: 0.35em;
+  text-shadow: 0 0 30px var(--glow), 0 0 60px var(--glow);
+}
+
+/* SIDE NAME HIDE */
+.hero-panel.hide {
+  opacity: 0;
+  transform: translateY(-50%) translateX(50px);
+  transition: all 0.4s ease;
+}
+
+
+@media (max-width: 768px) {
+  .hero-center-name {
+    opacity: 1 !important;
+    transform: translateX(-50%) translateY(0) !important;
+    font-size: 0.9rem;
+
+    bottom: 30px;
+  }
+}

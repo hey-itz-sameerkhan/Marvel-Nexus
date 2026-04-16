@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Cyberpunk Marvel character slider with interactive animations and effects">
+  <title>Marvel Nexus — Cyberpunk</title>
+
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<!-- Background -->
+<div class="bg-grid"></div>
+<div class="bg-blob" id="bgBlob"></div>
+<div class="scanlines"></div>
+
+<!-- Corners -->
+<div class="corner tl"></div>
+<div class="corner tr"></div>
+<div class="corner bl"></div>
+<div class="corner br"></div>
+
+<!-- Side Panel -->
+<div class="hero-panel">
+  <div class="hero-name-vert" id="heroNameVert">IRON MAN</div>
+  <div class="hero-tag">MARVEL • EARTH-616</div>
+</div>
+
+<!-- Main Layout -->
+<div class="layout">
+  
+  <!-- Title -->
+  <div class="title" data-text="MARVEL NEXUS">
+    MARVEL <span class="accent" id="titleAccent">NEXUS</span>
+  </div>
+
+  <!-- Swiper -->
+  <div class="swiper-outer">
+    <div class="swiper" id="marvelSwiper">
+      
+      <!-- Dynamic Slides -->
+      <div class="swiper-wrapper" id="swiperWrapper"></div>
+
+      <!-- Navigation -->
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+
+      <!-- Pagination -->
+      <div class="swiper-pagination"></div>
+
+      <!-- Scrollbar -->
+      <div class="swiper-scrollbar"></div>
+
+    </div>
+  </div>
+
+  <div class="hero-center-name" id="heroCenterName"></div>
+  
+</div>
+
+<!-- Hint -->
+<div class="hint">
+  ← → Arrow keys | Drag | Scroll to navigate
+</div>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<!-- Custom JS -->
+<script src="js/app.js"></script>
+
+</body>
+</html>
